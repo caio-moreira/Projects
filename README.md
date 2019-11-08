@@ -1,10 +1,10 @@
-# Scripts
+# Projects
 
-This repo contains some of the scripts I have developed.
+This repo contains some of the projects I have developed.
 
 I'll always be updating them.
 
-They are in english and I try to explain them in the comments.
+They are in english and I try to explain them with comments.
 
-Any doubts, feel free to contact me. :)
+If you have any doubts, feel free to contact me. :)
 
