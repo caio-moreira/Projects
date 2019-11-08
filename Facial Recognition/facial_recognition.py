@@ -3,26 +3,34 @@ import numpy as np
 import cv2
 from PIL import Image as img
 
-#Cria as variaveis com os diretorios a serem utilizados
-image_path = "images"
-result_path = "faces"
-training_data = "training_data"
 
-#Metodo que segmenta uma fotos em varios rostos e salva todos os rostos detectados
-def save_faces(cascade, img_name):
+# "Global" variables, containing the paths of the most relevant directories
+current_file_path = os.path.dirname(__file__)
+image_path = os.path.join(current_file_path, "images")
+result_path = os.path.join(current_file_path,"faces")
+training_data = os.path.join(current_file_path,"training_data")
+
+def save_faces(cascade_classifier, img_name):
+    """ Function that saves all the faces in a given image.
+
+    This function selects every face detected in a given image and saves it.
+  
+    Keyword arguments: 
+        cascade_classifier -- the object of the cascade classifier
+        img_name -- name of the image.
+    """
     
-    
-    #Funcoes que abrem e convertem a imagem para que se possa trabalhar com ela
-    face = img.open(os.path.join(image_path, img_name)).convert('L')
-    image = np.array(face, 'uint8')
+    # Opening the image and converting it to grayscale, then converting it to a numpy array
+    image = img.open(os.path.join(image_path, img_name)).convert('L')
+    image_array = np.array(image, 'uint8')
 
     #Codigo que itera em cada rosto encontrado na foto aberta acima
-    for i, face in enumerate(cascade.detectMultiScale(image)):
+    for i, face in enumerate(cascade_classifier.detectMultiScale(image_array)):
         #Salva as coordenadas da sub imagem encontrada
         x, y, w, h = face
         
         #Salva a sub imagem encontrada na variavel abaixo usando as coordenadas
-        sub_face = image[y:y + h, x:x + w]
+        sub_face = image_array[y:y + h, x:x + w]
 
         #Cria a pasta de resultados caso nao exista
         if not os.path.exists(result_path):
@@ -35,7 +43,7 @@ def save_faces(cascade, img_name):
 if __name__ == "__main__":
     
     #Inicializa o classificador em cascata atraves do path do arquivo
-    face_cascade = "haarcascade_frontalface_default.xml"
+    face_cascade = os.path.join(current_file_path, "haarcascade_frontalface_default.xml")
     cascade_classifier = cv2.CascadeClassifier(face_cascade)
 
     #Itera pelas imagens na pasta image_path e segmenta cada uma delas
