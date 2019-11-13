@@ -1,6 +1,6 @@
 # Logistic Regression + PCA
 
-The ultimate goal of this project is to **compare** using **runtime** and **accuracy** the effectiness of using a dimensionality reduction technique called Principal Component Analysis (PCA) to reduce the workload of a certain algorithm, in this case a Logistic Regression.
+The ultimate goal of this project is to **compare**, using **runtime** and **accuracy**, the effectiness of using a dimensionality reduction technique called Principal Component Analysis (PCA) to reduce the workload of a certain algorithm, in this case a Logistic Regression.
 
 For that, well use a well known dataset for training and testing, the **MNIST Database of Handwritten Digits**.
 
