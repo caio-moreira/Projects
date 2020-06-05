@@ -1,0 +1,93 @@
+File: FixedGoalInitialState\navigation_2.net
+Init: Name: robot-at-x1y1, Coordinates: (39, 0)
+Goal: Name: robot-at-x40y40, Coordinates: (0, 39)
+Epsi: 0.1
+Time: 1041 ms
+Iter: 167
+
+Grid: Shape: [40, 40]
+
+f w f f f w f f f f f f f f f f f f w f f f f f f f f f f f f f f f f f f f f G 
+f f f f f f f f f w f f f w f f f f f f f f f f f f f f w f f f f f f w f f f f 
+f f w f f f w f f f f w f f f f f f f f f f f f f f f f f f w f f f f f f f f f 
+f f f f w f f f f f f f f f f f f f w f f f f f f f f f f f f f f f f f f f f f 
+f f w f f f f f w f f f f f f f w f f f f f f f w f w f f f f f w f w f f w f f 
+f f f f f f f f f f f f f f f f f f f f f w f f f f f f f f w f f f f f f f f w 
+f f f w f w f f w f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f 
+f w f f f f f f f f f w f f f f f f f f f f f w f f f f f f f f f f f f f w f f 
+f f f f w f w f f f f f f f f f f f f f f f f f f f f f f f w f f f f w f f f f 
+f w f f f f f f f f f f f f f f f f w f f f f f f w f f f f f f f f f f f f w f 
+f f f f f f w f f f f f f f w f f f f f w f f f f f f w f f f f w f f f w f f f 
+f f w f f f f f f f f w f f f f f f f f f f f f w f f f f w f f f f f f f f f f 
+f f f f f f f f f w f f f f f f f f w f f f f f f f f f f f f w f f f f f f f f 
+f f f f f f f f f f f f f w f f f f f f f w f f f f f f f f f f f f f f f f f f 
+f f f f f f f w f f f f f f f f f w f f f f f f w f f f f w f f f w f f f f w f 
+f w f f f f f f f f f f f f f f f f f f f f f f f f f w f f f w f f f f f f f f 
+f f f f f f f w f f f f w f f f w f f f f w f f f f f f f f f f f f f f f w f f 
+f f f f f f f f f f f f f f f f f f f f f f f w f f f w f f f f f f f f f f f f 
+f w f f w f f f f w f w f f w f f f f f f f f f f f f f f f f f f f f f f f w f 
+f f f f f f w f f f f f f f f f f w f w f f f f f f f f f f w f f f w f w f f f 
+f f w f f f f f f w f f f f f f f f f f f f w f f w f f w f f f f f f f f f w f 
+f f f f w f f f f f f w f w f f f f f f f f f f f f f f f f f f w f f f f f f f 
+f f f f f f f f f f f f f f f f f w f f w f w f w f f f f f f f f f w f f f f f 
+f f f f w f f w f f f f w f f f f f f f f f f f f f f f w f f f f f f f w f f f 
+f w f f f f f f f f f f f f f f f f f f f f f w f f f f f f f f f f f f f f f f 
+f f f f f f f f f w f f f f f f f f f f f w f f f w f f f f f f f w f f f f w f 
+f f f f f w f f f f f f w f f f f f f f f f f f f f f f f f w f f f f f f f f f 
+w f f f f f f f f f f f f f f f f f f f w f f f w f f f f f f f f f f f w f f f 
+f f f f f f f f f f w f f f f w f f f f f f f f f f f w f f f f f f f f f f f f 
+f w f f f f f f f f f f f f f f f f f f f w f f f f f f f f f f f w f w f f w f 
+f f f f f f f f f f f f f f f f f f f f f f f f f f f f f f w f f f f f f f f f 
+f f f f w f f f f w f f f f f f f f f f f f f f f f f w f f f f w f f f f f f f 
+f w f f f f f w f f f f f f w f f f f f f f f w f f f f f f f f f f f f w f f f 
+f f f f f f f f f f f f f f f f w f f f f f f f f f f f f f f w f f f f f f f f 
+f f f f f f f f w f f f w f f f f f f f f f f w f f f f w f f f f f w f f f f f 
+f f f f f f f f f f f f f f f f f w f f f w f f f f w f f f w f f f f f f f w f 
+f f f f f f f f f f w f w f f f f f f f f f f f w f f f f f f f w f f f f f f f 
+f f w f w f f w f f f f f f f f f f f f f f f f f f f f f f f f f f w f w f f f 
+f f f f f f f f f f f f f f f f f f f w f f w f f f f f f f f f f f f f f f f f 
+I f w f f f f f f f f f f f w f f w f f f f f f f f f f f f f f f f f f f f f f 
+
+
+AnswerGrid: Shape: [40, 40]
+
+↓ □ ↓ ↓ ↓ □ → → → → → → → → ↓ ↓ ↓ ↓ □ → → → → → → → → → → → → → → → → → → → → G 
+→ → → → → → ↑ ↑ ↑ □ ↑ ↑ ↑ □ → → → → → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ 
+↑ ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↓ ↑ □ → → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ 
+↑ ↑ → ↑ □ → → → → → → → ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+↑ ↑ □ → → ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ □ ↑ ↑ ↑ ↑ ↑ □ ↑ □ ↑ ↑ □ ↑ ↑ 
+→ → → ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ → ↑ ↑ ↑ □ ↑ → ↑ → ↑ ↑ → ↑ □ 
+↑ ↑ ↑ □ ↑ □ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ← 
+↑ □ ↑ → ↑ → ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ 
+↑ → ↑ ↑ □ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ → ↑ ↑ 
+↑ □ ↑ ↑ → ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ ↑ □ ↑ 
+↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ → ↑ 
+↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ □ ↑ ↑ → ↑ □ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ 
+↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ 
+↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ □ ↑ → ↑ □ ↑ → ↑ ↑ ↑ ↑ → ↑ 
+↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ 
+↑ □ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ □ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ 
+↑ → ↑ ↑ → ↑ □ ↑ ↑ → ↑ → ↑ ↑ → ↑ ↑ □ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ □ ↑ → ↑ 
+↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ → ↑ ↑ □ ↑ ↑ □ ↑ ↑ □ ↑ → ↑ ↑ ↑ → ↑ → ↑ □ ↑ 
+↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ → ↑ □ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ → ↑ ↑ → ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ 
+↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ → ↑ → ↑ ↑ ↑ □ ↑ ↑ □ ↑ □ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ 
+↑ ↑ ↑ ↑ □ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ → ↑ → ↑ → ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ 
+↑ □ ↑ ↑ → ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ 
+↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ 
+↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ 
+□ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ 
+→ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ 
+↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ □ ↑ □ ↑ ↑ □ ↑ 
+↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ → ↑ ↑ → ↑ 
+↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 
+↑ □ ↑ ↑ → ↑ ↑ □ ↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ → ↑ ↑ ↑ □ ↑ ↑ ↑ 
+↑ → ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ ↑ □ ↑ ↑ → ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ ↑ ↑ □ ↑ ↑ ↑ □ ↑ → ↑ ↑ □ ↑ → ↑ □ ↑ ↑ ↑ → ↑ ↑ ↑ □ ↑ 
+↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ □ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ → ↑ ↑ □ ↑ → ↑ ↑ ↑ → ↑ □ ↑ ↑ ↑ ↑ ↑ → ↑ 
+↑ ↑ □ ↑ □ ↑ ↑ □ ↑ ↑ → ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ □ ↑ □ ↑ ↑ ↑ 
+↑ ↑ → ↑ → ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ → ↑ → ↑ ↑ ↑ 
+▲ ↑ □ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ □ ↑ ↑ □ ↑ → ↑ ↑ → ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ 

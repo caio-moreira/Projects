@@ -1,0 +1,21 @@
+File: FixedGoalInitialState\class_example.net
+Init: Name: robot-at-x1y4, Coordinates: (0, 0)
+Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
+Epsi: 0.1
+Time: 0 ms
+Iter: 10
+
+Grid: Shape: [4, 4]
+
+f f f f 
+w f f w 
+w w w w 
+w w w w 
+
+
+AnswerGrid: Shape: [4, 4]
+
+▶ → ↓ G 
+□ ↑ ↑ □ 
+□ □ □ □ 
+□ □ □ □ 

@@ -1,0 +1,49 @@
+states
+	robot-at-x1y4, robot-at-x2y3, robot-at-x2y4, robot-at-x3y3, robot-at-x3y4, robot-at-x4y4
+endstates
+
+action move-south
+	robot-at-x1y4 robot-at-x2y3 1.000000 1.000000
+	robot-at-x2y4 robot-at-x2y3 1.000000 1.000000
+	robot-at-x3y4 robot-at-x4y4 0.600000 0.400000
+	robot-at-x3y4 robot-at-x3y3 0.400000 0.600000
+endaction
+
+action move-north
+	robot-at-x2y3 robot-at-x2y4 1.000000 1.000000
+	robot-at-x3y3 robot-at-x3y4 1.000000 1.000000
+endaction
+
+action move-west
+endaction
+
+action move-east
+	robot-at-x1y4 robot-at-x2y4 1.000000 1.000000
+	robot-at-x2y4 robot-at-x3y4 1.000000 1.000000
+	robot-at-x3y4 robot-at-x4y4 1.000000 1.000000
+endaction
+	
+cost
+	robot-at-x1y4 move-south 1.000000
+	robot-at-x1y4 move-east 1.000000
+	robot-at-x2y3 move-north 1.000000
+	robot-at-x2y4 move-south 1.000000
+	robot-at-x2y4 move-east 1.000000
+	robot-at-x3y3 move-north 1.000000
+	robot-at-x3y4 move-south 2.000000
+	robot-at-x3y4 move-east 5.000000
+endcost
+
+initialstate
+	robot-at-x1y4
+endinitialstate
+
+goalstate
+	robot-at-x4y4
+endgoalstate
+
+Grid:
+4 4 4 4 
+1 4 4 1
+1 1 1 1
+1 1 1 1
