@@ -42,25 +42,17 @@ def execute_value_iteration_test(test, epsilon, output='console'):
         folder = os.path.join(folder, test.folder_name)
 
         file_name = test.file_name + '_value_iteration.txt'
-        policy_file_name = test.file_name + '_value_iteration_policy.json'
 
         output_file = open(
             f'{os.path.join(folder, file_name)}', 'a+', encoding='utf-8'
         )
 
-        policy_file = open(
-            f'{os.path.join(folder, policy_file_name)}', 'a+'
-        )
-
         # Truncating files, so that it doesn't append on existing content
         output_file.truncate(0)
-        policy_file.truncate(0)
 
         output_file.write(str(value_iteration))
-        json.dump(value_iteration.policies, policy_file)
 
         output_file.close()
-        policy_file.close()
 
     elif output == 'console':
         print(value_iteration)

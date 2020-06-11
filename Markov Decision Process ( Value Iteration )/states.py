@@ -120,6 +120,13 @@ class State():
     actions: ActionSet() \\
         -- ActionSet() containing the actions that are
         possible from this state.
+
+    policy: str \\
+        -- direction to which this state must go in order
+        to get to the goal state.
+
+    predecessors: list \\
+        -- list of states that lead to the current state.
     """
 
     def __init__(self, state_str, coordinates):
@@ -129,6 +136,10 @@ class State():
         self.y = int(coordinates[1])
 
         self.actions = ActionSet(self)
+
+        self.policy = None
+
+        self.predecessors = []
 
     def __repr__(self):
         return f'State({self.name}, [{self.x}, {self.y}])'
@@ -154,6 +165,34 @@ class State():
         self.x = self.x - 1
         self.y = max_coordinate - self.y
 
+    def update_policy(self, direction):
+        """
+        Description
+        -----------
+        Function used to update the `policy` attribute.
+
+        Parameters
+        ----------
+        direction: str \\
+            -- New direction to which the state should move.
+        """
+
+        self.policy = direction
+
+    def add_predecessor(self, state):
+        """
+        Description
+        -----------
+        Function used to append a new state to the `predecessors` attribute.
+
+        Parameters
+        ----------
+        state: State() \\
+            -- State to be appended.
+        """
+
+        self.predecessors.append(state)
+
     def update_action(self, direction, end_state, probability):
         """
         Description
@@ -162,6 +201,9 @@ class State():
         It has a probability because some states hava multiple
         end states, meaning each one has a probability of being
         the destination, they all add to 1.
+
+        It also updates the `end_state.predecessors` attribute
+        by adding the current state to  it. 
 
         An action can lead to the same place that it has started from.
 
@@ -181,6 +223,8 @@ class State():
         action = self.actions.get_action(direction)
 
         action.add_end_state(end_state, probability)
+
+        end_state.add_predecessor(self)
 
     def update_action_cost(self, direction, cost):
         """

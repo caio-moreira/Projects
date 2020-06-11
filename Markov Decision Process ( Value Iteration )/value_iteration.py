@@ -40,7 +40,7 @@ class ValueIteration():
         -- The grid on which actions are being performed.
 
     epsilon: float \\
-        -- Stopping criteria, when `max_diff` is smaller than this,
+        -- Stopping criteria, when `residual` is smaller than this,
         the algorithm has converged.
 
     time_elapsed: int \\
@@ -60,7 +60,7 @@ class ValueIteration():
             name of the state, direction to follow while on the state
         ) tuples.
 
-    max_diff: float \\
+    residual: float \\
         -- The maximum difference by subtracting the past costs of
         each state from the current costs. Used to stop the algorithm
         along with `epsilon`.
@@ -87,18 +87,22 @@ class ValueIteration():
 
         self.policies = {}
 
-        self.max_diff = 1.0
+        self.residual = 1.0
 
     def __repr__(self):
         return f'ValueIteration({self.Test})'
 
     def __str__(self):
         return f'''File: {os.path.join(self.folder_name, self.file_name)}
-Init: {self.init}
+Initial: {self.init}
 Goal: {self.goal}
-Epsi: {self.epsilon}
+Epsilon: {self.epsilon}
+
 Time: {self.time_elapsed} ms
-Iter: {self.iterations}
+Iterations: {self.iterations}
+
+Costs: {self.costs}
+Policies: {self.policies}
 
 Grid: {self.grid}
 
@@ -143,15 +147,17 @@ AnswerGrid: {self.answer_grid}'''
             self.costs.update({name: new_cost})
             self.policies.update({name: policy})
 
-        max_diff = 0
+            state.update_policy(policy)
+
+        residual = 0
 
         for name in old_costs:
             diff_old_new = self.costs[name] - old_costs[name]
 
-            if diff_old_new > max_diff:
-                max_diff = diff_old_new
+            if diff_old_new > residual:
+                residual = diff_old_new
 
-        self.max_diff = max_diff
+        self.residual = residual
 
     def get_new_cost(self, state, old_costs):
         """
@@ -222,7 +228,7 @@ AnswerGrid: {self.answer_grid}'''
 
         self.calculate_initial_cost()
 
-        while self.max_diff >= self.epsilon:
+        while self.residual >= self.epsilon:
             self.update_costs()
             self.iterations += 1
 
