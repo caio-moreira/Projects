@@ -40,8 +40,9 @@ class LoadTests():
         -----------
         Function used to add tests to both TestSet() instances of the class.
         """
+
         self.fixed_goal_tests.add_testset_list(self.read_tests('FixedGoal'))
-        # self.random_goal_tests.add_testset_list(self.read_tests('RandomGoal'))
+        self.random_goal_tests.add_testset_list(self.read_tests('RandomGoal'))
 
     def read_tests(self, test_type):
         """
@@ -73,8 +74,6 @@ class LoadTests():
             test_file = open(os.path.join(tests_folder, test), 'r+')
 
             tests.append(Test(test_file))
-
-            break
 
         return tests
 

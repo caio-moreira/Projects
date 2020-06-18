@@ -138,6 +138,7 @@ class State():
         self.actions = ActionSet(self)
 
         self.policy = None
+        self.cost = None
 
         self.predecessors = []
 
@@ -179,6 +180,20 @@ class State():
 
         self.policy = direction
 
+    def update_cost(self, direction):
+        """
+        Description
+        -----------
+        Function used to update the `cost` attribute.
+
+        Parameters
+        ----------
+        direction: str \\
+            -- New direction to which the state should move.
+        """
+
+        self.cost = direction
+
     def add_predecessor(self, state):
         """
         Description
@@ -203,7 +218,7 @@ class State():
         the destination, they all add to 1.
 
         It also updates the `end_state.predecessors` attribute
-        by adding the current state to  it. 
+        by adding the current state to  it.
 
         An action can lead to the same place that it has started from.
 

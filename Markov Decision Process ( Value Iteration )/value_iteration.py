@@ -21,6 +21,9 @@ class ValueIteration():
 
     Attributes
     ----------
+    name: str \\
+        -- Name of the algorithm, used as folder name to store the results.
+
     folder_name: str \\
         -- Folder where the test file is stored.
 
@@ -40,7 +43,7 @@ class ValueIteration():
         -- The grid on which actions are being performed.
 
     epsilon: float \\
-        -- Stopping criteria, when `residual` is smaller than this,
+        -- Stopping criteria, when `max_residual` is smaller than this,
         the algorithm has converged.
 
     time_elapsed: int \\
@@ -60,7 +63,7 @@ class ValueIteration():
             name of the state, direction to follow while on the state
         ) tuples.
 
-    residual: float \\
+    max_residual: float \\
         -- The maximum difference by subtracting the past costs of
         each state from the current costs. Used to stop the algorithm
         along with `epsilon`.
@@ -87,7 +90,7 @@ class ValueIteration():
 
         self.policies = {}
 
-        self.residual = 1.0
+        self.max_residual = 1.0
 
     def __repr__(self):
         return f'ValueIteration({self.Test})'
@@ -127,12 +130,13 @@ AnswerGrid: {self.answer_grid}'''
 
             self.costs.update({name: float(cost)})
 
-    def update_costs(self):
+    def update_costs_and_policies(self):
         """
         Description
         -----------
-        Updates the cost of each state using the Value Iteration approach
-        takes the minimum cost of all the actions.
+        Updates the cost and the repective policy for each state
+        taking the minimum cost of all the actions and the action
+        itself as the policy.
 
         Then computes the difference between each new cost and the old cost.
         """
@@ -149,15 +153,15 @@ AnswerGrid: {self.answer_grid}'''
 
             state.update_policy(policy)
 
-        residual = 0
+        max_residual = 0
 
         for name in old_costs:
-            diff_old_new = self.costs[name] - old_costs[name]
+            residual = abs(self.costs[name] - old_costs[name])
 
-            if diff_old_new > residual:
-                residual = diff_old_new
+            if residual > max_residual:
+                max_residual = residual
 
-        self.residual = residual
+        self.max_residual = max_residual
 
     def get_new_cost(self, state, old_costs):
         """
@@ -168,7 +172,7 @@ AnswerGrid: {self.answer_grid}'''
         To compute the cost of an action it sums its cost with all the
         costs of end states multiplied by their probability.
 
-        cost(a) = cost(a) + sum( all(cost(end_state) * probability) )
+        cost(a) = sum( all(cost(a) + cost(end_state) * probability) )
 
         Parameters
         -------
@@ -192,13 +196,13 @@ AnswerGrid: {self.answer_grid}'''
         policy = '-'
 
         for action in state.actions:
-            cost = action.cost
+            cost = 0
 
             for end_state, probability in action.end:
-                cost = cost + (old_costs[end_state.name] * probability)
+                cost += probability * (action.cost + old_costs[end_state.name])
 
             if min_cost == 0 or min_cost > cost:
-                min_cost = cost
+                min_cost = round(cost, 5)
                 policy = action.direction
 
         return min_cost, policy
@@ -215,7 +219,7 @@ AnswerGrid: {self.answer_grid}'''
         end = current time - start
         """
 
-        self.time_elapsed = int(round(time.time() * 1000)) - self.time_elapsed
+        self.time_elapsed = round((time.time() * 1000) - self.time_elapsed, 5)
 
     def run(self):
         """
@@ -228,8 +232,8 @@ AnswerGrid: {self.answer_grid}'''
 
         self.calculate_initial_cost()
 
-        while self.residual >= self.epsilon:
-            self.update_costs()
+        while self.max_residual >= self.epsilon:
+            self.update_costs_and_policies()
             self.iterations += 1
 
         self.update_time_elapsed_ms()
