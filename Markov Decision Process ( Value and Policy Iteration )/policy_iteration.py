@@ -46,6 +46,7 @@ class PolicyIteration(ValueIteration):
     epsilon: float \\
         -- Stopping criteria, when `max_residual` is smaller than this,
         the algorithm has converged.
+        -- Not used in Policy Iteration
 
     time_elapsed: int \\
         -- The time in milliseconds it took for the algorithm to run.
@@ -68,16 +69,24 @@ class PolicyIteration(ValueIteration):
         -- The maximum difference by subtracting the past costs of
         each state from the current costs. Used to stop the algorithm
         along with `epsilon`.
+        -- Not used in Policy Iteration
 
     initial_policy_grid: Grid() \\
         -- The grid representing the initial state, only used if one wants
         to compare it with the `answer_grid`.
+
+    policies_costs: dict \\
+        -- A dict with the same structure as the `costs` attribute.
+        It is used to store the costs of following the policies
+        for each state.
     """
 
-    def __init__(self, test, epsilon=1.0):
-        super().__init__(test, epsilon)
+    def __init__(self, test):
+        super().__init__(test)
 
-        initial_policy_grid = None
+        self.initial_policy_grid = None
+
+        self.policies_costs = {}
 
         self.get_initial_policy()
 
@@ -88,7 +97,6 @@ class PolicyIteration(ValueIteration):
         return f'''File: {os.path.join(self.folder_name, self.file_name)}
 Initial: {self.init}
 Goal: {self.goal}
-Epsilon: {self.epsilon}
 
 Time: {self.time_elapsed} ms
 Iterations: {self.iterations}
@@ -204,3 +212,56 @@ AnswerGrid: {self.answer_grid}'''
             cost = state.cost
 
             self.costs.update({name: float(cost)})
+
+    def evaluate_policies(self):
+        """
+        Description
+        -----------
+        Computes the cost of each new policy and then replaces
+        the current costs with those.
+        """
+
+        for name, policy in self.policies.items():
+            if name == self.goal.name:
+                self.policies_costs.update({name: 0.0})
+
+                continue
+
+            state = self.states.get_state(name)
+
+            action = state.actions.get_action(str('move-' + policy))
+
+            policy_cost = self.compute_cost(action, self.costs)
+
+            self.policies_costs.update({name: policy_cost})
+
+        self.costs = self.policies_costs.copy()
+
+    def run(self):
+        """
+        Description
+        -----------
+        Runs the algorithm, storing number of iterations and time elapsed.
+        """
+
+        self.update_time_elapsed_ms()
+
+        self.calculate_initial_cost()
+
+        run = True
+
+        while run:
+            old_policies = self.policies.copy()
+
+            self.update_costs_and_policies()
+
+            self.evaluate_policies()
+
+            self.iterations += 1
+
+            if old_policies == self.policies:
+                run = False
+
+        self.update_time_elapsed_ms()
+
+        self.update_answer()

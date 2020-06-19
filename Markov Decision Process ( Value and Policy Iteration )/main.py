@@ -44,7 +44,7 @@ def execute_value_iteration_test(test, epsilon, output='console'):
         return value_iteration
 
 
-def execute_policy_iteration_test(test, epsilon, output='console'):
+def execute_policy_iteration_test(test, output='console'):
     """
     Description
     -----------
@@ -72,7 +72,7 @@ def execute_policy_iteration_test(test, epsilon, output='console'):
         returns the instance of the policy_iteration used.
     """
 
-    policy_iteration = PolicyIteration(test, epsilon=epsilon)
+    policy_iteration = PolicyIteration(test)
 
     policy_iteration.run()
 
@@ -142,9 +142,9 @@ epsilon = 0.1
 output = 'file'
 
 for test in fixed_goal:
-    execute_value_iteration_test(test, epsilon, output=output)
-    execute_policy_iteration_test(test, epsilon, output=output)
+    # execute_value_iteration_test(test, epsilon, output=output)
+    execute_policy_iteration_test(test, output=output)
 
 for test in random_goal:
-    execute_value_iteration_test(test, epsilon, output=output)
-    execute_policy_iteration_test(test, epsilon, output=output)
+    # execute_value_iteration_test(test, epsilon, output=output)
+    execute_policy_iteration_test(test, output=output)

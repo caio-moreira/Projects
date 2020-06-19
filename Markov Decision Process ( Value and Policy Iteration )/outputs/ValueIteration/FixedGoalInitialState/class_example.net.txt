@@ -3,10 +3,10 @@ Initial: Name: robot-at-x1y4, Coordinates: (0, 0)
 Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
 Epsilon: 0.1
 
-Time: 0.99658 ms
+Time: 0.99 ms
 Iterations: 10
 
-Costs: {'robot-at-x1y4': 5.9232, 'robot-at-x2y3': 5.9232, 'robot-at-x2y4': 4.96928, 'robot-at-x3y3': 4.96928, 'robot-at-x3y4': 3.96928, 'robot-at-x4y4': 0}
+Costs: {'robot-at-x1y4': 5.92, 'robot-at-x2y3': 5.92, 'robot-at-x2y4': 4.97, 'robot-at-x3y3': 4.97, 'robot-at-x3y4': 3.97, 'robot-at-x4y4': 0}
 Policies: {'robot-at-x1y4': 'east', 'robot-at-x2y3': 'north', 'robot-at-x2y4': 'east', 'robot-at-x3y3': 'north', 'robot-at-x3y4': 'south', 'robot-at-x4y4': '-'}
 
 Grid: Shape: [4, 4]

@@ -146,7 +146,7 @@ AnswerGrid: {self.answer_grid}'''
         for name in self.states:
             state = self.states.get_state(name)
 
-            new_cost, policy = self.get_new_cost(state, old_costs)
+            new_cost, policy = self.get_min_cost(state, old_costs)
 
             self.costs.update({name: new_cost})
             self.policies.update({name: policy})
@@ -163,11 +163,12 @@ AnswerGrid: {self.answer_grid}'''
 
         self.max_residual = max_residual
 
-    def get_new_cost(self, state, old_costs):
+    def get_min_cost(self, state, old_costs):
         """
         Description
         -----------
-        Computes the cost of taking each action and selects the smallest.
+        Computes the cost of taking each action and selects the
+        least costly one.
 
         To compute the cost of an action it sums its cost with all the
         costs of end states multiplied by their probability.
@@ -198,14 +199,45 @@ AnswerGrid: {self.answer_grid}'''
         for action in state.actions:
             cost = 0
 
-            for end_state, probability in action.end:
-                cost += probability * (action.cost + old_costs[end_state.name])
+            cost += self.compute_cost(action, old_costs)
 
             if min_cost == 0 or min_cost > cost:
-                min_cost = round(cost, 5)
+                min_cost = cost
                 policy = action.direction
 
         return min_cost, policy
+
+    def compute_cost(self, action, states_costs):
+        """
+        Description
+        -----------
+        Computes the cost of taking each action and selects the smallest.
+
+        To compute the cost of an action it sums its cost with all the
+        costs of end states multiplied by their probability.
+
+        cost(a) = sum( all( probability * (cost(a) + cost(end_state)) ) )
+
+        Parameters
+        -------
+        action: Action() \\
+            -- Action to compute the cost.
+
+        states_costs: dict \\
+            -- Dict containing all the costs from the
+            previous iteration for each state.
+
+        Returns
+        -------
+        cost: float \\
+            -- The new cost.
+        """
+        cost = 0
+
+        for end_state, probability in action.end:
+            cost += probability * (action.cost + states_costs[end_state.name])
+
+        return round(cost, 2)
 
     def update_time_elapsed_ms(self):
         """
@@ -219,7 +251,7 @@ AnswerGrid: {self.answer_grid}'''
         end = current time - start
         """
 
-        self.time_elapsed = round((time.time() * 1000) - self.time_elapsed, 5)
+        self.time_elapsed = round((time.time() * 1000) - self.time_elapsed, 2)
 
     def run(self):
         """
@@ -238,20 +270,16 @@ AnswerGrid: {self.answer_grid}'''
 
         self.update_time_elapsed_ms()
 
-        self.update_answer(AnswerGrid(
-            self.states, self.policies, self.grid.shape,
-            self.init, self.goal
-        ).arrow_grid)
+        self.update_answer()
 
-    def update_answer(self, answer):
+    def update_answer(self):
         """
         Description
         -----------
         Updates the answer grid using the parameter.
-
-        Parameters
-        ----------
-        answer: ArrowGrid()
         """
 
-        self.answer_grid = answer
+        self.answer_grid = AnswerGrid(
+            self.states, self.policies, self.grid.shape,
+            self.init, self.goal
+        ).arrow_grid
