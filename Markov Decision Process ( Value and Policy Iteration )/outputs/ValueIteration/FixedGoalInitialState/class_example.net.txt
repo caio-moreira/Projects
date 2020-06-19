@@ -3,7 +3,7 @@ Initial: Name: robot-at-x1y4, Coordinates: (0, 0)
 Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
 Epsilon: 0.1
 
-Time: 0.99 ms
+Time: 1.0 ms
 Iterations: 10
 
 Costs: {'robot-at-x1y4': 5.92, 'robot-at-x2y3': 5.92, 'robot-at-x2y4': 4.97, 'robot-at-x3y3': 4.97, 'robot-at-x3y4': 3.97, 'robot-at-x4y4': 0}

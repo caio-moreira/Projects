@@ -2,7 +2,7 @@ File: FixedGoalInitialState\class_example.net
 Initial: Name: robot-at-x1y4, Coordinates: (0, 0)
 Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
 
-Time: 0.0 ms
+Time: 1.0 ms
 Iterations: 2
 
 Costs: {'robot-at-x4y4': 0.0, 'robot-at-x3y4': 4.16, 'robot-at-x3y3': 5.16, 'robot-at-x2y4': 5.16, 'robot-at-x2y3': 6.4, 'robot-at-x1y4': 6.4}

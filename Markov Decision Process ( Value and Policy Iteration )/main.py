@@ -142,9 +142,9 @@ epsilon = 0.1
 output = 'file'
 
 for test in fixed_goal:
-    # execute_value_iteration_test(test, epsilon, output=output)
+    execute_value_iteration_test(test, epsilon, output=output)
     execute_policy_iteration_test(test, output=output)
 
 for test in random_goal:
-    # execute_value_iteration_test(test, epsilon, output=output)
+    execute_value_iteration_test(test, epsilon, output=output)
     execute_policy_iteration_test(test, output=output)
