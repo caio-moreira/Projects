@@ -135,10 +135,12 @@ AnswerGrid: {self.answer_grid}'''
 
         time_elapsed = (time.time() * 1000) - start
 
-        if func_return is not None:
-            return round(time_elapsed, 2), func_return
+        time_elapsed = round(time_elapsed, 2)
 
-        return round(time_elapsed, 2)
+        if func_return is not None:
+            return time_elapsed, func_return
+
+        return time_elapsed
 
     def run(self):
         """

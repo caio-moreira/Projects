@@ -1,0 +1,23 @@
+File: FixedGoalInitialState\a_test.net
+Initial: Name: robot-at-x1y1, Coordinates: (2, 0)
+Goal: Name: robot-at-x3y3, Coordinates: (0, 2)
+Epsilon: 0.1
+
+Time: 0.0 ms
+Iterations: 8
+
+Costs: {'robot-at-x1y1': 5.8828125, 'robot-at-x2y1': 4.93359375, 'robot-at-x3y1': 2.9921875, 'robot-at-x1y2': 3.984375, 'robot-at-x3y2': 1.99609375, 'robot-at-x1y3': 2.9921875, 'robot-at-x2y3': 1.99609375, 'robot-at-x3y3': 0}
+Policies: {'robot-at-x1y1': 'east', 'robot-at-x2y1': 'east', 'robot-at-x3y1': 'north', 'robot-at-x1y2': 'north', 'robot-at-x3y2': 'north', 'robot-at-x1y3': 'east', 'robot-at-x2y3': 'east', 'robot-at-x3y3': '-'}
+
+Grid: Shape: [3, 3]
+
+f f G 
+f w f 
+I f f 
+
+
+AnswerGrid: Shape: [3, 3]
+
+→ → G 
+↑ □ ↑ 
+▶ → ↑ 

@@ -2,15 +2,20 @@ File: FixedGoalInitialState\class_example.net
 Initial: Name: robot-at-x1y4, Coordinates: (0, 0)
 Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
 
-Time: 1.0 ms
+Total Time: 1.0 ms
+    Improvement Time: 1.0 ms
+    Evaluation Time: 0.0 ms
+        List Creation Time: 0.0 ms
+        Evaluation Function Time: 0.0 ms
+            Calculation Time: 0.0 ms
 Iterations: 2
 
-Costs: {'robot-at-x4y4': 0.0, 'robot-at-x3y4': 4.16, 'robot-at-x3y3': 5.16, 'robot-at-x2y4': 5.16, 'robot-at-x2y3': 6.4, 'robot-at-x1y4': 6.4}
+Costs: {'robot-at-x4y4': 0.0, 'robot-at-x3y4': 4.0, 'robot-at-x3y3': 5.0, 'robot-at-x2y4': 5.0, 'robot-at-x2y3': 6.0, 'robot-at-x1y4': 6.0}
 Policies: {'robot-at-x4y4': '-', 'robot-at-x3y4': 'south', 'robot-at-x3y3': 'north', 'robot-at-x2y4': 'east', 'robot-at-x2y3': 'north', 'robot-at-x1y4': 'east'}
 
 Grid: Shape: [4, 4]
 
-f f f f 
+I f f G 
 w f f w 
 w w w w 
 w w w w 
