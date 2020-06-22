@@ -174,7 +174,7 @@ class Test():
 
     def __str__(self):
         return f'''
-File: {os.path.join(self.folder, self.file_name)}
+File: {os.path.join(self.folder_name, self.file_name)}
 Init: {self.initial_state}
 Goal: {self.goal_state}
 Grid: {self.grid}'''

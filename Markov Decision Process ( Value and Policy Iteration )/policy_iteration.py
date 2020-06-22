@@ -20,9 +20,6 @@ class PolicyIteration(ValueIteration):
     test: Test() \\
         -- Test() object, based on which the algorithm will run.
 
-    epsilon: float \\
-        -- Used to stop tha algorithm. default = 1.0.
-
     Attributes
     ----------
     folder_name: str \\
@@ -44,9 +41,7 @@ class PolicyIteration(ValueIteration):
         -- The grid on which actions are being performed.
 
     epsilon: float \\
-        -- Stopping criteria, when `max_residual` is smaller than this,
-        the algorithm has converged.
-        -- Not used in Policy Iteration
+        -- Not used in Policy Iteration.
 
     time_elapsed: int \\
         -- The time in milliseconds it took for the algorithm to run.
@@ -66,19 +61,31 @@ class PolicyIteration(ValueIteration):
         ) tuples.
 
     max_residual: float \\
-        -- The maximum difference by subtracting the past costs of
-        each state from the current costs. Used to stop the algorithm
-        along with `epsilon`.
-        -- Not used in Policy Iteration
+        -- Not Used in Policy Iteration.
 
     initial_policy_grid: Grid() \\
         -- The grid representing the initial state, only used if one wants
         to compare it with the `answer_grid`.
 
-    policies_costs: dict \\
+    old_costs: dict \\
         -- A dict with the same structure as the `costs` attribute.
-        It is used to store the costs of following the policies
-        for each state.
+        It is used to store the previous costs.
+
+    evaluation_time_elapsed: int \\
+        -- Time in milliseconds spent on evaluation step. \\
+        `evaluation_time_elapsed` =
+            `evaluation_list_time_elapsed` + `evaluation_cost_time_elapsed`
+
+    evaluation_list_time_elapsed: int \\
+        -- Time in milliseconds spent on creating the
+        evaluation order list step.
+
+    evaluation_cost_time_elapsed: int \\
+        -- Time in milliseconds spent on evaluation function step.
+
+    policy_cost_calculation_time_elapsed: int \\
+        -- Time in milliseconds spent on cost calculation step.
+        Part of `evaluation_cost_time_elapsed`.
     """
 
     def __init__(self, test):
@@ -86,7 +93,13 @@ class PolicyIteration(ValueIteration):
 
         self.initial_policy_grid = None
 
-        self.policies_costs = {}
+        self.old_costs = {}
+
+        self.evaluation_time_elapsed = 0
+
+        self.evaluation_list_time_elapsed = 0
+        self.evaluation_cost_time_elapsed = 0
+        self.policy_cost_calculation_time_elapsed = 0
 
         self.get_initial_policy()
 
@@ -98,7 +111,12 @@ class PolicyIteration(ValueIteration):
 Initial: {self.init}
 Goal: {self.goal}
 
-Time: {self.time_elapsed} ms
+Total Time: {self.time_elapsed + self.evaluation_time_elapsed} ms
+    Improvement Time: {self.time_elapsed} ms
+    Evaluation Time: {self.evaluation_time_elapsed} ms
+        List Creation Time: {self.evaluation_list_time_elapsed} ms
+        Evaluation Function Time: {self.evaluation_cost_time_elapsed} ms
+            Calculation Time: {self.policy_cost_calculation_time_elapsed} ms
 Iterations: {self.iterations}
 
 Costs: {self.costs}
@@ -114,7 +132,7 @@ AnswerGrid: {self.answer_grid}'''
         """
         Description
         -----------
-        Computes the initial policy for each state.
+        Computes the initial policy and cost for each state.
 
         Uses a depth-first search approach.
         """
@@ -197,11 +215,42 @@ AnswerGrid: {self.answer_grid}'''
         initial_state.update_policy(policy)
         initial_state.update_cost(cost)
 
+    def run(self):
+        """
+        Description
+        -----------
+        Runs the algorithm, storing number of iterations and time elapsed.
+        """
+
+        self.calculate_initial_cost()
+
+        run = True
+
+        while run:
+            old_policies = self.policies.copy()
+
+            self.old_costs = self.costs.copy()
+
+            self.time_elapsed += self.time_it(
+                self.update_costs_and_policies
+            )
+
+            self.evaluation_time_elapsed += self.time_it(
+                self.evaluate_policies
+            )
+
+            self.iterations += 1
+
+            if old_policies == self.policies:
+                run = False
+
+        self.update_answer()
+
     def calculate_initial_cost(self):
         """
         Description
         -----------
-        Computes the initial cost of each state.
+        Gets the initial cost from each state.
         The cost is the cost of following the initial
         state's policy to get to the goal state.
         """
@@ -221,47 +270,192 @@ AnswerGrid: {self.answer_grid}'''
         the current costs with those.
         """
 
-        for name, policy in self.policies.items():
-            if name == self.goal.name:
-                self.policies_costs.update({name: 0.0})
+        evaluation_list_time_spent, states_sorted = self.time_it(
+            self.get_evaluation_order
+        )
 
-                continue
+        self.evaluation_list_time_elapsed += evaluation_list_time_spent
 
-            state = self.states.get_state(name)
+        evaluation_cost_time_spent, policies_costs = self.time_it(
+            self.get_evaluation_costs, states_sorted
+        )
 
-            action = state.actions.get_action(str('move-' + policy))
+        self.evaluation_cost_time_elapsed += evaluation_cost_time_spent
 
-            policy_cost = self.compute_cost(action, self.costs)
+        self.costs = policies_costs
 
-            self.policies_costs.update({name: policy_cost})
-
-        self.costs = self.policies_costs.copy()
-
-    def run(self):
+    def get_evaluation_order(self):
         """
         Description
         -----------
-        Runs the algorithm, storing number of iterations and time elapsed.
+        Gets a list of all states sorted by ascending cost.
+
+        It is used to evaluate policy in order.
+
+        Returns
+        -------
+        list \\
+            -- Sorted list of states' names.
         """
 
-        self.update_time_elapsed_ms()
+        index = 0
 
-        self.calculate_initial_cost()
+        next_states = list({
+            name: cost
+            for name, cost in sorted(
+                self.costs.items(), key=lambda item: item[1]
+            )
+        }.keys())
 
-        run = True
+        return next_states
 
-        while run:
-            old_policies = self.policies.copy()
+    def get_evaluation_costs(self, states_sorted):
+        """
+        Description
+        -----------
+        Evaluates the cost of following the policy
+        for each state.
 
-            self.update_costs_and_policies()
+        Parameters
+        ----------
+        states_sorted: list \\
+            -- List of states' names sorted by cost.
 
-            self.evaluate_policies()
+        Returns
+        -------
+        dict \\
+            -- Dict consisting of {state name: policy cost}.
+        """
 
-            self.iterations += 1
+        new_costs = {}
 
-            if old_policies == self.policies:
-                run = False
+        while states_sorted != []:
+            name = states_sorted.pop(0)
 
-        self.update_time_elapsed_ms()
+            state = self.states.get_state(name)
 
-        self.update_answer()
+            if state == self.goal:
+                new_costs.update({self.goal.name: 0.0})
+
+                continue
+
+            policy = self.policies[name]
+
+            action = state.actions.get_action(policy)
+
+            time_spent, policy_cost = self.time_it(
+                self.get_policy_cost,
+                state, action, new_costs
+            )
+
+            self.policy_cost_calculation_time_elapsed += time_spent
+
+            new_costs.update({name: policy_cost})
+
+            state.update_cost(policy_cost)
+
+        return new_costs
+
+    def get_policy_cost(self, state, action, costs):
+        """
+        Description
+        -----------
+        Computes the cost of following the policy
+        for a given state and respective action.
+
+        This is a diffrent way of approaching the iterative solution.
+
+        The iterative solution takes the old cost and iterates from it.
+
+        So, for each iteration:
+
+        prob = probability
+        act = action cost
+        cost = end state old cost
+
+        `cost = sum( all( prob * (act + cost) ) )`
+
+        Repeats this for all states and repeats until the
+        maximum residual (difference between old and new cost)
+        is smaller than a threshold (epsilon).
+
+        This approach executes an infinite loop of the iterative
+        evaluation in a single calculation, by following the pattern:
+
+        `cost_corr` is the absolute difference between the cost of the current
+        state and the cost of the end state. So, it substitutes the action
+        cost should go, since it its the cost of going from the end state
+        back to the current one or the other way around.
+
+        `... prob * (cost_corr + prob * (cost_corr  + prob * (cost_corr + cost)))`
+
+        Which is equal to:
+
+        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity * (cost_corr)))
+        + prob^infinity * (act + cost)`
+
+        So, this lead to a infinite geometric series, starting on
+        `prob * cost_corr` with ratio `prob` + last term, which is
+        `(prob ^ infinity) * (cost_corr + cost)`, which is tends to 0,
+        so its ignored.
+
+        The sum of an infinite geometric series is:
+
+        `initial term * / 1 - ratio`
+
+        Since in the code bellow `factor = 1 - probability`
+        the sum is equal to `probability * cost_correction / factor`.
+
+        But also, the rest of the cost sum equation must be
+        divided by the factor. That's why factor is only used
+        when returning the result.
+
+        And since we might have multiple end states that lead
+        to an infinite geometric series, `factor` is multiplied
+        by the new factor `factor *= 1 - prob`.
+
+        Parameters
+        ----------
+        state: State() \\
+            -- The state to be evaluated.
+
+        action: Action() \\
+            -- The action corresponding to the policy
+            to evaluate.
+
+        costs: dict \\
+            -- Dict of all the states that were already
+            evaluated.
+
+        Returns
+        -------
+        int \\
+            -- The cost of following the policy.
+        """
+
+        cost = 0
+
+        factor = 1
+
+        for end, probability in action.end:
+            if end.name not in costs.keys():
+                end_policy = self.policies[end.name]
+
+                end_policy_action = end.actions.get_action(end_policy)
+
+                factor = 1 - probability
+
+                if factor == 0:
+                    factor = 1
+
+                cost_correction = abs(
+                    self.old_costs[state.name] - self.old_costs[end.name]
+                )
+
+                geo_prog_sum = (probability * cost_correction)
+
+                cost += probability * action.cost + geo_prog_sum
+            else:
+                cost += probability * (action.cost + costs[end.name])
+
+        return round(cost / factor, 5)

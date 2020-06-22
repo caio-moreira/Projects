@@ -125,8 +125,15 @@ class State():
         -- direction to which this state must go in order
         to get to the goal state.
 
+    cost: int \\
+        -- cost of getting from the state to the goal.
+
     predecessors: list \\
         -- list of states that lead to the current state.
+
+    policy_predecessors: list \\
+        -- list of states that lead to the current state
+        when their policy is followed.
     """
 
     def __init__(self, state_str, coordinates):
@@ -141,6 +148,7 @@ class State():
         self.cost = None
 
         self.predecessors = []
+        self.policy_predecessors = []
 
     def __repr__(self):
         return f'State({self.name}, [{self.x}, {self.y}])'
@@ -180,7 +188,7 @@ class State():
 
         self.policy = direction
 
-    def update_cost(self, direction):
+    def update_cost(self, cost):
         """
         Description
         -----------
@@ -188,11 +196,11 @@ class State():
 
         Parameters
         ----------
-        direction: str \\
-            -- New direction to which the state should move.
+        cost: int \\
+            -- New cost.
         """
 
-        self.cost = direction
+        self.cost = cost
 
     def add_predecessor(self, state):
         """
@@ -206,7 +214,34 @@ class State():
             -- State to be appended.
         """
 
-        self.predecessors.append(state)
+        if state not in self.predecessors and state != self:
+            self.predecessors.append(state)
+
+    def add_policy_predecessor(self, state):
+        """
+        Description
+        -----------
+        Function used to append a new state to the
+        `policy_predecessors` attribute.
+
+        Parameters
+        ----------
+        state: State() \\
+            -- State to be appended.
+        """
+
+        if state != self:
+            self.policy_predecessors.append(state)
+
+    def clean_policy_predecessors(self):
+        """
+        Description
+        -----------
+        Function used to clean the `policy_predecessors` attribute.
+        For each new iteration, new policies, so, new predecessors.
+        """
+
+        self.policy_predecessors = []
 
     def update_action(self, direction, end_state, probability):
         """

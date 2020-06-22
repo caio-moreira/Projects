@@ -111,6 +111,53 @@ Grid: {self.grid}
 
 AnswerGrid: {self.answer_grid}'''
 
+    def time_it(self, func, *args):
+        """
+        Description
+        -----------
+        Returns the time spent on a function.
+
+        start = current time - 0 \\
+        time_elapsed = current time - start
+
+        Parameters
+        ----------
+        func: function \\
+            -- Function to time.
+
+        *args: list \\
+            -- Arguments to be passed on to the function as parameters.
+        """
+
+        start = (time.time() * 1000)
+
+        func_return = func(*args)
+
+        time_elapsed = (time.time() * 1000) - start
+
+        if func_return is not None:
+            return round(time_elapsed, 2), func_return
+
+        return round(time_elapsed, 2)
+
+    def run(self):
+        """
+        Description
+        -----------
+        Runs the algorithm, storing number of iterations and time elapsed.
+        """
+
+        self.calculate_initial_cost()
+
+        while self.max_residual >= self.epsilon:
+            self.time_elapsed += self.time_it(
+                self.update_costs_and_policies
+            )
+
+            self.iterations += 1
+
+        self.update_answer()
+
     def calculate_initial_cost(self):
         """
         Description
@@ -146,11 +193,22 @@ AnswerGrid: {self.answer_grid}'''
         for name in self.states:
             state = self.states.get_state(name)
 
-            new_cost, policy = self.get_min_cost(state, old_costs)
+            state.clean_policy_predecessors()
+
+        for name in self.states:
+            state = self.states.get_state(name)
+
+            new_cost, policy = 0, '-'
+
+            if state == self.goal:
+                pass
+            else:
+                new_cost, policy = self.get_min_cost(state, old_costs)
 
             self.costs.update({name: new_cost})
             self.policies.update({name: policy})
 
+            state.update_cost(new_cost)
             state.update_policy(policy)
 
         max_residual = 0
@@ -196,14 +254,21 @@ AnswerGrid: {self.answer_grid}'''
         min_cost = 0
         policy = '-'
 
+        action_used = None
+
         for action in state.actions:
             cost = 0
 
-            cost += self.compute_cost(action, old_costs)
+            cost = self.compute_cost(action, old_costs)
 
-            if min_cost == 0 or min_cost > cost:
+            if min_cost == 0 or min_cost >= cost:
                 min_cost = cost
                 policy = action.direction
+                action_used = action
+
+        if action_used is not None:
+            for end, probability in action_used.end:
+                end.add_policy_predecessor(state)
 
         return min_cost, policy
 
@@ -237,40 +302,7 @@ AnswerGrid: {self.answer_grid}'''
         for end_state, probability in action.end:
             cost += probability * (action.cost + states_costs[end_state.name])
 
-        return round(cost, 2)
-
-    def update_time_elapsed_ms(self):
-        """
-        Description
-        -----------
-        Updates `time_elapsed` attribute.
-
-        Used two times, at the start and the end of the algorithm.
-
-        start = current time - 0 \\
-        end = current time - start
-        """
-
-        self.time_elapsed = round((time.time() * 1000) - self.time_elapsed, 2)
-
-    def run(self):
-        """
-        Description
-        -----------
-        Runs the algorithm, storing number of iterations and time elapsed.
-        """
-
-        self.update_time_elapsed_ms()
-
-        self.calculate_initial_cost()
-
-        while self.max_residual >= self.epsilon:
-            self.update_costs_and_policies()
-            self.iterations += 1
-
-        self.update_time_elapsed_ms()
-
-        self.update_answer()
+        return cost
 
     def update_answer(self):
         """

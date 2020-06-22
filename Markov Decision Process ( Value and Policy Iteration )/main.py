@@ -57,10 +57,6 @@ def execute_policy_iteration_test(test, output='console'):
         -- A Test() instance with the information
         needed to run the policy_iteration.
 
-    epsilon: float \\
-        -- A floating point number, used to set
-        the policy_iteration's stopping decision.
-
     output: str \\
         -- A string that tells the function where
         its output is expected.

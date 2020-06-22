@@ -74,13 +74,13 @@ class ActionSet():
             -- The action requested.
         """
 
-        if direction == 'move-north':
+        if 'north' in direction:
             return self.north
-        elif direction == 'move-south':
+        elif 'south' in direction:
             return self.south
-        elif direction == 'move-east':
+        elif 'east' in direction:
             return self.east
-        elif direction == 'move-west':
+        elif 'west' in direction:
             return self.west
 
 
