@@ -396,8 +396,8 @@ AnswerGrid: {self.answer_grid}'''
 
         Which is equal to:
 
-        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity*cost_corr
-        + prob^infinity * (cost_corr + cost)`
+        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity*cost_corr`
+        `+ prob^infinity * (cost_corr + cost)`
 
         So, this lead to a infinite geometric series, starting on
         `prob * cost_corr` with ratio `prob` + last term, which is
@@ -409,15 +409,15 @@ AnswerGrid: {self.answer_grid}'''
         `initial term * / 1 - ratio`
 
         Since in the code bellow `factor = 1 - probability`
-        the sum is equal to `probability * cost_correction / factor`.
+        the sum is equal to `(probability * cost_correction) / factor`.
 
-        But also, the rest of the cost sum equation must be
-        divided by the factor. That's why factor is only used
-        when returning the result.
+        But also, the remainder of the cost sum equation must be
+        divided by the factor. That's why factor is only used when
+        returning the result.
 
         And since we might have multiple end states that lead
-        to an infinite geometric series, `factor` is multiplied
-        by the new factor `factor *= 1 - prob`.
+        to an infinite geometric series, `factor` is multiplied by
+        all the divisors for each series' sum as in `factor *= 1 - prob`.
 
         Parameters
         ----------
