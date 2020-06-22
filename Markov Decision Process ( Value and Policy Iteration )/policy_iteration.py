@@ -397,7 +397,7 @@ AnswerGrid: {self.answer_grid}'''
         Which is equal to:
 
         `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity*cost_corr
-        + prob^infinity * (act + cost)`
+        + prob^infinity * (cost_corr + cost)`
 
         So, this lead to a infinite geometric series, starting on
         `prob * cost_corr` with ratio `prob` + last term, which is
