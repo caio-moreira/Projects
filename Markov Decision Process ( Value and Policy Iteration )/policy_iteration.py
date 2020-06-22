@@ -97,6 +97,7 @@ class PolicyIteration(ValueIteration):
 
         self.evaluation_time_elapsed = 0
 
+        self.improvement_time_elapsed = 0
         self.evaluation_list_time_elapsed = 0
         self.evaluation_cost_time_elapsed = 0
         self.policy_cost_calculation_time_elapsed = 0
@@ -111,8 +112,8 @@ class PolicyIteration(ValueIteration):
 Initial: {self.init}
 Goal: {self.goal}
 
-Total Time: {self.time_elapsed + self.evaluation_time_elapsed} ms
-    Improvement Time: {self.time_elapsed} ms
+Total Time: {self.time_elapsed} ms
+    Improvement Time: {self.improvement_time_elapsed} ms
     Evaluation Time: {self.evaluation_time_elapsed} ms
         List Creation Time: {self.evaluation_list_time_elapsed} ms
         Evaluation Function Time: {self.evaluation_cost_time_elapsed} ms
@@ -231,7 +232,7 @@ AnswerGrid: {self.answer_grid}'''
 
             self.old_costs = self.costs.copy()
 
-            self.time_elapsed += self.time_it(
+            self.improvement_time_elapsed += self.time_it(
                 self.update_costs_and_policies
             )
 
@@ -243,6 +244,10 @@ AnswerGrid: {self.answer_grid}'''
 
             if old_policies == self.policies:
                 run = False
+
+        self.time_elapsed = (
+            self.improvement_time_elapsed + self.evaluation_time_elapsed
+        )
 
         self.update_answer()
 
@@ -387,11 +392,11 @@ AnswerGrid: {self.answer_grid}'''
         cost should go, since it its the cost of going from the end state
         back to the current one or the other way around.
 
-        `... prob * (cost_corr + prob * (cost_corr  + prob * (cost_corr + cost)))`
+        `... prob*(cost_corr + prob*(cost_corr + prob*(cost_corr + cost)))`
 
         Which is equal to:
 
-        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity * (cost_corr)))
+        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity*cost_corr
         + prob^infinity * (act + cost)`
 
         So, this lead to a infinite geometric series, starting on
