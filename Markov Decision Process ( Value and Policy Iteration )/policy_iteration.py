@@ -135,7 +135,7 @@ AnswerGrid: {self.answer_grid}'''
         -----------
         Computes the initial policy and cost for each state.
 
-        Uses a depth-first search approach.
+        Uses a breadth-first search approach.
         """
 
         self.policies.update({self.goal.name: '-'})
@@ -368,56 +368,118 @@ AnswerGrid: {self.answer_grid}'''
         Computes the cost of following the policy
         for a given state and respective action.
 
-        This is a diffrent way of approaching the iterative solution.
+        So, let's take an example action that might be here for us to
+        evaluate.
 
-        The iterative solution takes the old cost and iterates from it.
+        On state X, action A leads to (Y and X), each with 0.5 probabilty and
+        action cost = 1.
+        In this scenario Y is the ultimate goal state, so its cost is 0.
 
-        So, for each iteration:
+        In order to evaluate the cost of X, the equation is the following:
 
-        prob = probability
-        act = action cost
-        cost = end state old cost
+        `X.cost = 0.5 * (A.cost + Y.cost) + 0.5 * (A.cost + X.cost)`
 
-        `cost = sum( all( prob * (act + cost) ) )`
+        We know the cost of Y is 0 and the cost of A is 1, so:
 
-        Repeats this for all states and repeats until the
-        maximum residual (difference between old and new cost)
-        is smaller than a threshold (epsilon).
+        `X.cost = 0.5 * (1 + 0) + 0.5 * (1 + X.cost)` \\
+        `X.cost = 0.5 + 0.5*1 + 0.5 * X.cost` \\
+        `X.cost = 1 + 0.5 * X.cost` (Minimized equation of X.cost)
 
-        This approach executes an infinite loop of the iterative
-        evaluation in a single calculation, by following the pattern:
+        Right here, the value of the cost of X is unknown, because that's
+        what the equation is trying to figure out. In order to solve this
+        just like a common high school equation we just subtract
+        `0.5 * X.cost` from both sides, like so:
 
-        `cost_corr` is the absolute difference between the cost of the current
-        state and the cost of the end state. So, it substitutes the action
-        cost should go, since it its the cost of going from the end state
-        back to the current one or the other way around.
+        `X.cost - 0.5 * X.cost = 1 + 0.5 * X.cost - 0.5 * X.cost` \\
+        `0.5 * X.cost = 1`
 
-        `... prob*(cost_corr + prob*(cost_corr + prob*(cost_corr + cost)))`
+        Then, we divide both sides by `0.5`:
 
-        Which is equal to:
+        `0.5 * X.cost / 0.5 = 1 / 0.5` \\
+        `X.cost = 2`
 
-        `prob*cost_corr + prob^2*cost_corr + ... + prob^infinity*cost_corr`
-        `+ prob^infinity * (cost_corr + cost)`
+        Easy right? But the problem here is how to do that in a
+        computationally unexpensive way.
 
-        So, this lead to a infinite geometric series, starting on
-        `prob * cost_corr` with ratio `prob` + last term, which is
-        `(prob ^ infinity) * (cost_corr + cost)`, which is tends to 0,
-        so its ignored.
+        So, the first step was done already, suppose a state depends on X,
+        let's call it state W. So in order to compute W's cost we need to
+        know X's cost. How do we ensure that X's cost is computed before
+        W's?
 
-        The sum of an infinite geometric series is:
+        Easy, W's cost is always higher than X's, because it is some sort of
+        sum of W's action cost and X's own cost, so we create a list of all
+        states sorted by their ascending previous cost, which we already did,
+        then we compute each value starting from the first state (goal state,
+        cost = 0), that way, we make sure all of the states like our
+        exemplified X are calculated first.
 
-        `initial term * / 1 - ratio`
+        So after all of that is cleared, how to do the math in code?
 
-        Since in the code bellow `factor = 1 - probability`
-        the sum is equal to `(probability * cost_correction) / factor`.
+        Well, let's take our own X again, same X, same action A.
+        Here's the minimized equation for X.cost:
 
-        But also, the remainder of the cost sum equation must be
-        divided by the factor. That's why factor is only used when
-        returning the result.
+        `X.cost = 1 + 0.5 * X.cost`
 
-        And since we might have multiple end states that lead
-        to an infinite geometric series, `factor` is multiplied by
-        all the divisors for each series' sum as in `factor *= 1 - prob`.
+        We already know it's value is 2. we want to eliminate X.cost
+        from the right and divide everything by 0.5, that would give us 2.
+
+        But we can't simply say that the right X.cost is 0 and the left one
+        is 2, that's wrong, but we can replace the right X.cost for something.
+
+        What? You'd ask me. Well, we can substitute that value for its
+        absolute distance to the one we are trying to find. But we don't
+        know them, how to get the absolute distance? Simple, we use the
+        past distance, from the values in `self.old_costs`. Let me show why.
+
+        Let's take new states, A, B and C. C is the goal. This is their
+        structure:
+
+        A has an action (Y) that leads to both C and B, cost = 2 and
+        respective probabilities are 0.6 and 0.4.
+
+        B has an action (Z) that leads only to A with cost 1.
+
+        So we have a loop. How does this work? B's cost depends on A's,
+        so A's cost will be calculated first. Here it goes:
+
+        `A.cost = 0.6 * (Y.cost + C.cost) + 0.4 * (Y.cost + B.cost)` \\
+        `A.cost = 0.6 * (2 + 0) + 0.4 * (2 + B.cost)` \\
+        `A.cost = 1.2 + 0.8 + 0.4 * B.cost`
+
+        Having `B.cost = Z.cost + A.cost` and substituting that.
+        Following the same mathematical logic used to get X's cost.
+
+        `A.cost = 2 + 0.4 * (Z.cost + A.cost)` \\
+        `A.cost = 2 + 0.4 * (1 + A.cost)` \\
+        `A.cost = 2.4 + 0.4 * A.cost` \\
+        `0.6 * A.cost = 2.4` (Subtracting 0.4 * A.cost on both sides) \\
+        `A.cost = 4` (Dividing both sides by 0.6)
+
+        What if, from the beginning, we had subtracted A and B cost's? What
+        would we have left? 1, because that is the cost of the action that
+        leads from B to A. So, applying the cost difference approach.
+
+        `A.cost = 1.2 + 0.8 + 0.4 * abs(A.old_cost - B.old_cost)`\\
+        `A.cost = 2 + 0.4 * 1` \\
+        `A.cost = 2.4`
+
+        That's wrong, but it's almost right, its missing something, the
+        division by a number, number which is represented by 1 minus the
+        probability that we used to multiply our cost difference (0.4), so
+        `1 - 0.4 = 0.6` then we have an answer:
+
+        `A.cost = 2.4 / 0.6` \\
+        `A.cost = 4`
+
+        But would it work for our first example? Let's try.
+
+        `X.cost = 1 + 0.5 * abs(X.old_cost - X.old_cost)` \\
+        `X.cost = 1 + 0.5 * 0` \\
+        `X.cost = 1` (Let's not forget to divide by `1 - probability`) \\
+        `X.cost = 1 / 0.5`
+        `X.cost = 2`
+
+        This is the best way to explain I could think of, hope it's clear.
 
         Parameters
         ----------
@@ -448,7 +510,7 @@ AnswerGrid: {self.answer_grid}'''
 
                 end_policy_action = end.actions.get_action(end_policy)
 
-                factor = 1 - probability
+                factor *= 1 - probability
 
                 if factor == 0:
                     factor = 1
@@ -457,9 +519,7 @@ AnswerGrid: {self.answer_grid}'''
                     self.old_costs[state.name] - self.old_costs[end.name]
                 )
 
-                geo_prog_sum = (probability * cost_correction)
-
-                cost += probability * action.cost + geo_prog_sum
+                cost += probability * (action.cost + cost_correction)
             else:
                 cost += probability * (action.cost + costs[end.name])
 
