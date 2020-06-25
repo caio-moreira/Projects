@@ -2,8 +2,8 @@ File: FixedGoalInitialState\class_example.net
 Initial: Name: robot-at-x1y4, Coordinates: (0, 0)
 Goal: Name: robot-at-x4y4, Coordinates: (0, 3)
 
-Total Time: 1.0 ms
-    Improvement Time: 1.0 ms
+Total Time: 0.0 ms
+    Improvement Time: 0.0 ms
     Evaluation Time: 0.0 ms
         List Creation Time: 0.0 ms
         Evaluation Function Time: 0.0 ms

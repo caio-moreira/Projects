@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import pandas as pd
 from tests import LoadTests
 from value_iteration import ValueIteration
 from policy_iteration import PolicyIteration
@@ -40,8 +41,8 @@ def execute_value_iteration_test(test, epsilon, output='console'):
 
     if output in ['console', 'file']:
         output_processing(output, test, value_iteration, 'ValueIteration')
-    else:
-        return value_iteration
+
+    return value_iteration
 
 
 def execute_policy_iteration_test(test, output='console'):
@@ -74,8 +75,8 @@ def execute_policy_iteration_test(test, output='console'):
 
     if output in ['console', 'file']:
         output_processing(output, test, policy_iteration, 'PolicyIteration')
-    else:
-        return policy_iteration
+
+    return policy_iteration
 
 
 def output_processing(output, test, algorithm, algorithm_name):
@@ -137,10 +138,42 @@ epsilon = 0.1
 # file or console
 output = 'file'
 
+metrics_df = pd.DataFrame(columns=[
+    'test_name', 'vi_time', 'vi_iter', 'pi_time', 'pi_iter'
+])
+
 for test in fixed_goal:
-    execute_value_iteration_test(test, epsilon, output=output)
-    execute_policy_iteration_test(test, output=output)
+    value_iteration = execute_value_iteration_test(test, epsilon, output=output)
+    policy_iteration = execute_policy_iteration_test(test, output=output)
+
+    metrics_dict = {
+        'test_name': str({os.path.join(test.folder_name, test.file_name)}),
+        'vi_time': value_iteration.time_elapsed,
+        'vi_iter': value_iteration.iterations,
+        'pi_time': policy_iteration.time_elapsed,
+        'pi_iter': policy_iteration.iterations
+    }
+
+    metrics_df = metrics_df.append(metrics_dict, ignore_index=True)
 
 for test in random_goal:
-    execute_value_iteration_test(test, epsilon, output=output)
-    execute_policy_iteration_test(test, output=output)
+    value_iteration = execute_value_iteration_test(test, epsilon, output=output)
+    policy_iteration = execute_policy_iteration_test(test, output=output)
+
+    metrics_dict = {
+        'test_name': str(os.path.join(test.folder_name, test.file_name)),
+        'vi_time': value_iteration.time_elapsed,
+        'vi_iter': value_iteration.iterations,
+        'pi_time': policy_iteration.time_elapsed,
+        'pi_iter': policy_iteration.iterations
+    }
+
+    metrics_df = metrics_df.append(metrics_dict, ignore_index=True)
+
+metrics_df.to_csv(
+    os.path.join(
+        os.path.join(os.path.dirname(__file__), 'outputs'),
+        'metrics.csv'
+    ),
+    index=False
+)
