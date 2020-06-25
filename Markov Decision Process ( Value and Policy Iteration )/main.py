@@ -147,7 +147,7 @@ for test in fixed_goal:
     policy_iteration = execute_policy_iteration_test(test, output=output)
 
     metrics_dict = {
-        'test_name': str({os.path.join(test.folder_name, test.file_name)}),
+        'test_name': str(os.path.join(test.folder_name, test.file_name)),
         'vi_time': value_iteration.time_elapsed,
         'vi_iter': value_iteration.iterations,
         'pi_time': policy_iteration.time_elapsed,
